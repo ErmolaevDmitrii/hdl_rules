@@ -1,0 +1,6 @@
+module(
+    name = "hdl_rules",
+    repo_name = "hdl_rules",
+)
+
+bazel_dep(name = "bazel_skylib", version = "1.8.2")
