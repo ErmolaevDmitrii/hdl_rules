@@ -1,6 +1,6 @@
 visibility("private")
 
-VerilogInfo = provider(
+VerilogContext = provider(
     doc = "SystemVerilog sources and metadata for downstream EDA filelists.",
     fields = {
         "srcs": "Depset of .sv/.v/.svh/.vh files in dependency order.",
@@ -9,10 +9,10 @@ VerilogInfo = provider(
     },
 )
 
-def merge_verilog_info(ctx, direct_srcs = [], direct_incdirs = [], direct_defines = []):
-    dep_infos = [dep[VerilogInfo] for dep in ctx.attr.deps if VerilogInfo in dep]
+def merge_verilog_context(ctx, direct_srcs = [], direct_incdirs = [], direct_defines = []):
+    dep_infos = [dep[VerilogContext] for dep in ctx.attr.deps if VerilogContext in dep]
 
-    return VerilogInfo(
+    return VerilogContext(
         srcs = depset (
             direct=direct_srcs,
             transitive=[info.srcs for info in dep_infos],
@@ -30,13 +30,13 @@ def merge_verilog_info(ctx, direct_srcs = [], direct_incdirs = [], direct_define
         ),
     )
 
-def collect_verilog_info(ctx):
-    return merge_verilog_info(ctx)
+def collect_verilog_context(ctx):
+    return merge_verilog_context(ctx)
 
 def _verilog_library_impl(ctx):
     direct_srcs = ctx.files.srcs
     direct_incdirs = [src.dirname for src in direct_srcs] + ctx.attr.incdirs
-    verilog_info = merge_verilog_info(
+    verilog_context = merge_verilog_context(
         ctx,
         direct_srcs = direct_srcs,
         direct_incdirs = direct_incdirs,
@@ -44,8 +44,8 @@ def _verilog_library_impl(ctx):
     )
 
     return [
-        DefaultInfo(files = verilog_info.srcs),
-        verilog_info,
+        DefaultInfo(files = verilog_context.srcs),
+        verilog_context,
     ]
 
 verilog_library = rule (

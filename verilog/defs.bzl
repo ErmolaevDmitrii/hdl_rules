@@ -2,13 +2,13 @@ visibility("public")
 
 load(
     ":providers.bzl",
-    _VerilogInfo = "VerilogInfo",
+    _VerilogContext = "VerilogContext",
     _verilog_library = "verilog_library",
-    _merge_verilog_info = "merge_verilog_info",
-    _collect_verilog_info = "collect_verilog_info",
+    _merge_verilog_context = "merge_verilog_context",
+    _collect_verilog_context = "collect_verilog_context",
 )
 
-VerilogInfo = _VerilogInfo
+VerilogContext = _VerilogContext
 verilog_library = _verilog_library
-merge_verilog_info = _merge_verilog_info
-collect_verilog_info = _collect_verilog_info
+merge_verilog_context = _merge_verilog_context
+collect_verilog_context = _collect_verilog_context

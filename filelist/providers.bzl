@@ -1,18 +1,18 @@
 visibility("private")
 
-load("//verilog:defs.bzl", "collect_verilog_info")
+load("//verilog:defs.bzl", "collect_verilog_context")
 
 def _verilog_filelist_impl(ctx):
-    verilog_info = collect_verilog_info(ctx)
+    verilog_context = collect_verilog_context(ctx)
     lines = []
 
-    for incdir in verilog_info.incdirs.to_list():
+    for incdir in verilog_context.incdirs.to_list():
         lines.append("+incdir+%s" % incdir)
 
-    for define in verilog_info.defines.to_list():
+    for define in verilog_context.defines.to_list():
         lines.append("+define+%s" % define)
 
-    for src in verilog_info.srcs.to_list():
+    for src in verilog_context.srcs.to_list():
         lines.append(src.path)
 
     ctx.actions.write(
