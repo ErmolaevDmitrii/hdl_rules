@@ -17,27 +17,23 @@ def _verilog_jinja2_render_impl(ctx):
     config_json_file = ctx.actions.declare_file(rendered_file_path + "_config.json")
     ctx.actions.write(
         output = config_json_file,
-        content = json.encode(ctx.attr.config)
+        content = json.encode(ctx.attr.params)
     )
 
     renderer_args = ctx.actions.args()
-    renderer_args.add(
-        arg_name_or_value = "-t",
-        value = template_file.path,
-    )
-    renderer_args.add(
-        arg_name_or_value = "-c",
-        value = config_json_file.path,
-    )
-    renderer_args.add(
-        arg_name_or_value = "-o",
-        value = rendered_file.path,
-    )
+    renderer_args.add("-t", template_file.path)
+    renderer_args.add("-c", config_json_file.path)
+    renderer_args.add("-o", rendered_file.path)
+    include_dirs = {}
+    for util_file in ctx.files._jinja2_utils:
+        include_dirs[util_file.dirname] = None
+    for include_dir in include_dirs:
+        renderer_args.add("-I", include_dir)
 
     inputs = (
         [template_file, config_json_file]
         + ctx.files.deps
-        + ctx.files.__jinja2_utils
+        + ctx.files._jinja2_utils
     )
 
     ctx.actions.run(
@@ -45,7 +41,7 @@ def _verilog_jinja2_render_impl(ctx):
         outputs = [rendered_file],
         executable = ctx.executable.renderer,
         arguments = [renderer_args],
-        mnemonic = "Jinja2_SV_Renderer",
+        mnemonic = "Jinja2SvRenderer",
     )
 
     verilog_context = merge_verilog_context(
@@ -75,13 +71,12 @@ verilog_jinja2_render = rule(
             allow_files = True,
         ),
         "renderer": attr.label(
-            default = Label(":default_renderer/default_renderer"),
+            default = Label("//jinja2/default_renderer:default_renderer"),
             executable = True,
             cfg = "exec",
         ),
-        "__jinja2_utils": attr.label(
-            default = Label(":utils/jinja2_utils"),
-            allow_files = True,
+        "_jinja2_utils": attr.label(
+            default = Label("//jinja2/utils:jinja2_utils"),
         )
     }
 )

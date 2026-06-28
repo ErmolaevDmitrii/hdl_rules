@@ -80,6 +80,14 @@ def parse_args():
         type=Path,
         help="Path to resulting .sv file (if not stated, resulting file is output in place with template file)",
     )
+    parser.add_argument(
+        "-I",
+        "--include-dir",
+        action="append",
+        default=[],
+        type=Path,
+        help="Additional Jinja2 template search directory",
+    )
     return parser.parse_args()
 
 def main():
@@ -101,7 +109,7 @@ def main():
             pass
 
     env = Environment(
-        loader=FileSystemLoader("."),
+        loader=FileSystemLoader(["."] + [str(path) for path in args.include_dir]),
         extensions=["jinja2.ext.do"],
         undefined=StrictUndefined,
         trim_blocks=True,

@@ -5,4 +5,5 @@ package(
 filegroup(
     name = "jinja2_utils",
     srcs = glob(["**/*.j2"]),
+    visibility = ["//visibility:public"],
 )

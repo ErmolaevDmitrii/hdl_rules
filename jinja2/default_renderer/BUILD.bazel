@@ -7,5 +7,7 @@ package(
 py_binary(
     name="default_renderer",
     srcs = ["default_renderer.py"],
+    legacy_create_init = False,
     main = "default_renderer.py",
+    visibility = ["//visibility:public"],
 )
