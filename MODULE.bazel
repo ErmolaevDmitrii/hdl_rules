@@ -1,6 +1,6 @@
 module(
     name = "hdl_rules",
-    version = "0.1.0"
+    version = "0.1.0",
     repo_name = "hdl_rules",
 )
 
