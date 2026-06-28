@@ -1,6 +1,6 @@
-visibility("private")
-
 load("//verilog:defs.bzl", "merge_verilog_context")
+
+visibility("private")
 
 def _verilog_jinja2_render_impl(ctx):
     template_file = ctx.file.template

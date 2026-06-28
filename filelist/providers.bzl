@@ -1,6 +1,6 @@
-visibility("private")
-
 load("//verilog:defs.bzl", "collect_verilog_context")
+
+visibility("private")
 
 def _verilog_filelist_impl(ctx):
     verilog_context = collect_verilog_context(ctx)
