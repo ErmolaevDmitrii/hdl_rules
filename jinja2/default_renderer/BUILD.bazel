@@ -1,0 +1,11 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+
+package(
+    default_visibility = ["//jinja2:__subpackages__"],
+)
+
+py_binary(
+    name="default_renderer",
+    srcs = ["default_renderer.py"],
+    main = "default_renderer.py",
+)

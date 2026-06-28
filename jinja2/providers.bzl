@@ -34,7 +34,11 @@ def _verilog_jinja2_render_impl(ctx):
         value = rendered_file.path,
     )
 
-    inputs = [template_file, config_json_file] + ctx.files.deps
+    inputs = (
+        [template_file, config_json_file]
+        + ctx.files.deps
+        + ctx.files.__jinja2_utils
+    )
 
     ctx.actions.run(
         inputs = inputs,
@@ -71,9 +75,13 @@ verilog_jinja2_render = rule(
             allow_files = True,
         ),
         "renderer": attr.label(
-            default = Label("TODO"),
+            default = Label("//default_renderer:default_renderer"),
             executable = True,
             cfg = "exec",
         ),
+        "__jinja2_utils": attr.label(
+            default = Label("//utils:jinja2_utils"),
+            allow_files = True,
+        )
     }
 )
