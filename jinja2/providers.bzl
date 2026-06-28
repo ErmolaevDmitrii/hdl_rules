@@ -75,12 +75,12 @@ verilog_jinja2_render = rule(
             allow_files = True,
         ),
         "renderer": attr.label(
-            default = Label("//default_renderer:default_renderer"),
+            default = Label(":default_renderer/default_renderer"),
             executable = True,
             cfg = "exec",
         ),
         "__jinja2_utils": attr.label(
-            default = Label("//utils:jinja2_utils"),
+            default = Label(":utils/jinja2_utils"),
             allow_files = True,
         )
     }
